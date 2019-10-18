@@ -1,9 +1,8 @@
 const users = require('express').Router();
 const {
-  createUser, getAllUsers, getSingleUser,
+  getAllUsers, getSingleUser,
 } = require('../controllers/users');
 
-users.post('/', createUser);
 users.get('/', getAllUsers);
 users.get('/:id', getSingleUser);
 
