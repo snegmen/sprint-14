@@ -6,14 +6,21 @@ const { NODE_ENV, JWT_SECRET } = process.env;
 
 module.exports.createUser = (req, res) => {
   if (Object.keys(req.body).length === 0) return res.status(400).send({ message: 'Тело запроса пустое' });
-  bcrypt.hash(req.body.password, 10)
+  // bcrypt.hash(req.body.password, 10)
+  //   .then((hash) => User.create({
+  //     email: req.body.email,
+  //     password: hash,
+  //     name: req.body.name,
+  //     about: req.body.about,
+  //     avatar: req.body.avatar,
+  //   }))
+  const {
+    name, about, avatar, email, password,
+  } = req.body
+  bcrypt.hash(password, 10)
     .then((hash) => User.create({
-      email: req.body.email,
-      password: hash,
-      name: req.body.name,
-      about: req.body.about,
-      avatar: req.body.avatar,
-    }))
+      name, about, avatar, email, password: hash,
+    })
     .then((user) => {
       res.status(201).send({
         _id: user._id,
@@ -36,7 +43,7 @@ module.exports.login = (req, res) => {
         maxAge: 3600000 * 24 * 7,
         httpOnly: true,
         sameSite: true,
-      }).send({ message: 'Успешно зарегистрирован' });
+      }).send({ message: 'Ок' });
     })
     .catch((err) => {
       res.status(401).send({ message: err.message });
